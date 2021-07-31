@@ -11,9 +11,11 @@
     width: 100px;
     border-radius: 7px;
     border: none;
+    padding-top: 2px;
     background: #4B4B4B;
     color: #FFB015;
     font-size: 16px;
+    font-family: "Hind";
     cursor: pointer;
     transition: 0.2s;
 }
