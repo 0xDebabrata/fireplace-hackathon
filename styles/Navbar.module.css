@@ -9,9 +9,9 @@
 .logout {
     height: 35px;
     width: 100px;
-    border-radius: 10px;
-    border: 1px solid #FFB015;
-    background: transparent;
+    border-radius: 7px;
+    border: none;
+    background: #4B4B4B;
     color: #FFB015;
     font-size: 16px;
     cursor: pointer;

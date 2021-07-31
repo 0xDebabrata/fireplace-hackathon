@@ -24,8 +24,8 @@ const Navbar = () => {
                     className={styles.logo}
                     src="/logo.png"
                     alt="fireplace logo"
-                    height={60}
-                    width={193}
+                    height={50}
+                    width={160}
                 />
             </Link>
 
