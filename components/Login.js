@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {supabase} from '../utils/supabaseClient'
+import toast from 'react-hot-toast'
 
 import styles from '../styles/Login.module.css'
 
@@ -13,17 +14,24 @@ const Login = () => {
             setLoading(true)
             const { error } = await supabase.auth.signIn({ email })
             if (error) throw error
-            alert("Check your email to login")
         } catch (error) {
-            alert(error)
+            console.log(error)
         } finally {
             setLoading(false)
+            return "Success"
         }
     }
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
         e.preventDefault()
-        handleLogin(email)
+
+        const promise = handleLogin(email) 
+
+        toast.promise(promise, {
+            loading: "Sending email",
+            success: "Check your email for login link",
+            error: "Error logging in"
+        })
     }
 
     return (
