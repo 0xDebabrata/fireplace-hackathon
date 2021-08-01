@@ -10,6 +10,7 @@ import styles from '../styles/Home.module.css'
 export default function Home() {
     
     const [session, setSession] = useState(null)
+    const [flag, setFlag] = useState(false)
 
     useEffect(() => {
         setSession(supabase.auth.session())
@@ -25,8 +26,8 @@ export default function Home() {
             {!session && <Login />}
             {session && (
                 <>
-                    <Files />
-                    <UploadButton />
+                    <Files flag={flag} />
+                    <UploadButton flag={flag} setFlag={setFlag} />
                 </>
             )}
         </div>

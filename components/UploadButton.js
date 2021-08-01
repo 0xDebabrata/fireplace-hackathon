@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 
 import styles from '../styles/UploadButton.module.css'
 
-const UploadButton = () => {
+const UploadButton = ({ flag, setFlag }) => {
 
     const fileInput = useRef(null)
 
@@ -19,6 +19,8 @@ const UploadButton = () => {
         if (error) {
             console.log(error)
             throw new Error(error)
+        } else {
+            setFlag(!flag)
         }
     }
 
