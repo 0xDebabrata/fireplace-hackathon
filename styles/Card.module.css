@@ -1,0 +1,73 @@
+.container {
+    width: 90%;
+    height: 50px;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    margin: 10px auto;
+    border: none;
+    border-radius: 7px;
+}
+
+.name {
+    color: #FFFFFFCC;
+    font-size: 16px;
+    font-weight: 400;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 95%;
+}
+
+.wrapperLeft {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 60%;
+}
+
+.container svg {
+    width: 30px;
+    height: 30px;
+    fill: #4B4B4B;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: 0.2s all;
+}
+
+.container svg:hover {
+    fill: #FFB015;
+}
+
+.wrapperRight {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.wrapperRight svg {
+    width: 27px;
+    height: 27px;
+    fill: #4B4B4B;
+    cursor: pointer;
+    transition: 0.2s all;
+}
+
+.wrapperRight svg:hover {
+    fill: #FFB015;
+}
+
+
+
+
+
+
+
+
+
+
+

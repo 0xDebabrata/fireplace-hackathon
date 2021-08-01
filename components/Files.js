@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import { supabase } from '../utils/supabaseClient'
 
+import Card from './Card'
+
 const Files = () => {
 
     const [videos, setVideos] = useState(null)
+    const [loading, setLoading] = useState(true)
 
     const getFiles = async () => {
         const { data, error } = await supabase
@@ -16,14 +19,20 @@ const Files = () => {
           })
 
         setVideos(data)
+        setLoading(false)
     }
 
     useEffect(() => {
         getFiles()
-    })
+    }, [])
 
      return (
          <div>
+             {loading ? "Loading" :
+                 videos.map(video => {
+                     return <Card key={video.id} video={video} list={videos} setVideos={setVideos} />
+                 })
+             }
          </div>
      )
 }
