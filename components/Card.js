@@ -1,13 +1,12 @@
 import React from 'react'
 import { supabase } from '../utils/supabaseClient'
+import toast from 'react-hot-toast'
 
 import styles from '../styles/Card.module.css'
 
 const Card = ({ video, list, setVideos }) => {
 
-    const handleDelete = async (id) => {
-        const updatedList = list.filter(video => video.id != id)
-
+    const deleteFile = async (id) => {
         const { data, error } = await supabase
             .storage
             .from("videos")
@@ -15,10 +14,22 @@ const Card = ({ video, list, setVideos }) => {
 
         if (error) {
             console.log(error)
-            alert("There was an error deleting the video")
+            throw new Error(error)
         } else {
+            const updatedList = list.filter(video => video.id != id)
             setVideos(updatedList)
         }
+    }
+
+    const handleDelete = async (id) => {
+
+        const promise = deleteFile(id)
+
+        toast.promise(promise, {
+            success: "Video deleted successfully",
+            loading: "Deleting video",
+            error: "Could not delete video"
+        })
     }
 
     return (
