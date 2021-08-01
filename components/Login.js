@@ -13,12 +13,12 @@ const Login = () => {
         try {
             setLoading(true)
             const { error } = await supabase.auth.signIn({ email })
-            if (error) throw error
+            if (error) throw error 
         } catch (error) {
             console.log(error)
+            throw new Error(error)
         } finally {
             setLoading(false)
-            return "Success"
         }
     }
 
@@ -35,21 +35,26 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <input
-                className={styles.input}
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-            />
-            <button
-                className={styles.button}
-                onClick={(e) => handleClick(e)}
-                disabled={loading}
-            >
-                {loading ? "Loading..." : "Login"}
-            </button>
+        <div className={styles.parent}>
+            <div className={styles.container}>
+                <h1 className={styles.header}>Login</h1>
+                <div className={styles.wrapper}>
+                    <input
+                        className={styles.input}
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                    />
+                    <button
+                        className={styles.button}
+                        onClick={(e) => handleClick(e)}
+                        disabled={loading}
+                    >
+                        {loading ? "Loading" : "Login"}
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }

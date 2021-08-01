@@ -3,6 +3,7 @@ import { supabase } from '../utils/supabaseClient'
 
 import Login from '../components/Login.js'
 import Files from '../components/Files.js'
+import UploadButton from '../components/UploadButton'
 
 import styles from '../styles/Home.module.css'
 
@@ -22,7 +23,12 @@ export default function Home() {
     return (
         <div>
             {!session && <Login />}
-            {session && <Files />}
+            {session && (
+                <>
+                    <Files />
+                    <UploadButton />
+                </>
+            )}
         </div>
     )
 }
