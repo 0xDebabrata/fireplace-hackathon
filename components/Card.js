@@ -52,6 +52,9 @@ const Card = ({ video, list, setVideos }) => {
                 <h2 className={styles.name}>{video.name}</h2>
             </div>
             <div className={styles.wrapperRight}>
+                <button className={styles.button}>
+                    START
+                </button>
                 <svg 
                     onClick={() => handleDelete(video.id)}
                     width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"

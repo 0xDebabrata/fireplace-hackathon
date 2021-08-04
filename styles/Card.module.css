@@ -61,6 +61,15 @@
     fill: #FFB015;
 }
 
+.button {
+    height: 25px;
+    width: 65px;
+    background-color: #FFB015;
+    border: none;
+    border-radius: 7px;
+    margin-right: 10px;
+    cursor: pointer;
+}
 
 
 
