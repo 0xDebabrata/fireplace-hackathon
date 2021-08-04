@@ -41,6 +41,25 @@ const Card = ({ video, list, setVideos }) => {
         window.open(signedURL, '_blank')
     }
 
+    const createWatchparty = async (name) => {
+        const { signedURL, error } = await supabase
+            .storage
+            .from("videos")
+            .createSignedUrl(`${supabase.auth.user().id}/${name}`, 21600)
+
+        const info = {
+            video_url: signedURL,
+            creator_id: supabase.auth.user().id
+        }
+
+        const { data, err } = await supabase
+            .from("watchparties")
+            .insert([info])
+
+        window.open(`http://localhost:3000/${supabase.auth.user().id}/${data[0].id}`)
+
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.wrapperLeft}>
@@ -52,7 +71,9 @@ const Card = ({ video, list, setVideos }) => {
                 <h2 className={styles.name}>{video.name}</h2>
             </div>
             <div className={styles.wrapperRight}>
-                <button className={styles.button}>
+                <button 
+                    onClick={() => createWatchparty(video.name)}
+                    className={styles.button}>
                     START
                 </button>
                 <svg 
