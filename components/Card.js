@@ -39,7 +39,6 @@ const Card = ({ video, list, setVideos }) => {
             .createSignedUrl(`${supabase.auth.user().id}/${name}`, 21600)
 
         window.open(signedURL, '_blank')
-        console.log(signedURL)
     }
 
     return (
