@@ -44,12 +44,15 @@ const Party = () => {
                 const payload = {
                     "method": "create",
                     "partyId": id,
+                    "src": videoSrc,
                     "clientId": clientId
                 }
 
-                ws.onopen = () => {
-                    ws.send(JSON.stringify(payload))
-                    console.log("create request sent")
+                if (videoSrc) {
+                    ws.onopen = () => {
+                        ws.send(JSON.stringify(payload))
+                        console.log("create request sent")
+                    }
                 }
 
             } else {
@@ -69,7 +72,7 @@ const Party = () => {
             ws.close()
         }
 
-    }, [router.isReady])
+    })
 
     return (
         <div>
