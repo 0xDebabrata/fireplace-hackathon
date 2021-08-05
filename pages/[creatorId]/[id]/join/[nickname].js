@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import WebSocket from 'isomorphic-ws'
 import { supabase } from "../../../../utils/supabaseClient"
 import uuid from 'react-uuid'
+import toast from "react-hot-toast"
 
 import Loader from "../../../../components/Loading"
 
@@ -17,7 +18,6 @@ const Watch = () => {
 
     const router = useRouter()
 
-
     useEffect(() => {
 
         if (supabase.auth.session()) {
@@ -31,7 +31,7 @@ const Watch = () => {
         const ws = new WebSocket(`ws://localhost:8080/${clientId}`)
 
         if (router.isReady) {
-            const { creatorId, id } = router.query
+            const { creatorId, id, nickname } = router.query
 
             if (supabase.auth.session()) {
                 if (creatorId === supabase.auth.user().id) {
@@ -43,6 +43,7 @@ const Watch = () => {
             const payload = {
                 "method": "join",
                 "clientId": clientId,
+                "nickname": nickname,
                 "partyId": id
             }
 
@@ -59,6 +60,31 @@ const Watch = () => {
                 console.log(response)
                 setVideoSrc(response.party.src)
                 setLoading(false)
+            }
+
+            // New user joined watchparty
+            if (response.method === "new") {
+                console.log(response.nickname + " joined!")
+                toast(`${response.nickname} joined!`, {
+                    icon: "✌️",
+                    position: "top-right",
+                    style: {
+                      background: '#333',
+                      color: '#fff',
+                    },
+                })
+            }
+
+            if (response.method === "leave") {
+                console.log(response.nickname + " left!")
+                toast(`${response.nickname} left!`, {
+                    icon: "👋",
+                    position: "top-right",
+                    style: {
+                      background: '#333',
+                      color: '#fff',
+                    },
+                })
             }
 
         }
