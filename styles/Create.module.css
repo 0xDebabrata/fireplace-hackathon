@@ -81,6 +81,23 @@
     background-color: #FFB015;
 }
 
-
+.nicknameContainer {
+    margin: 0 auto;
+    height: 200px;
+    width: 350px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #4B4B4B;
+    position: absolute;
+}
 
 
