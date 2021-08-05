@@ -6,6 +6,8 @@ import uuid from 'react-uuid'
 
 import Loader from "../../../../components/Loading"
 
+import styles from "../../../../styles/Watch.module.css"
+
 const Watch = () => {
 
     const [creator, setCreator] = useState(false)
@@ -70,8 +72,13 @@ const Watch = () => {
     return (
         <div>
             {loading ? <Loader loading={loading} /> :
-            <div>
-                <video src={videoSrc} autoPlay={false} />
+            <div className={styles.container}>
+                <video 
+                    id="video"
+                    src={videoSrc} 
+                    autoPlay={false} 
+                    controls={true}
+                />
             </div>
             }
         </div>
