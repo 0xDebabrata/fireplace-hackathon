@@ -1,10 +1,13 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import { supabase } from '../utils/supabaseClient'
 import toast from 'react-hot-toast'
 
 import styles from '../styles/Card.module.css'
 
 const Card = ({ video, list, setVideos }) => {
+
+    const router = useRouter()
 
     const deleteFile = async (id) => {
         const { data, error } = await supabase
@@ -56,7 +59,7 @@ const Card = ({ video, list, setVideos }) => {
             .from("watchparties")
             .insert([info])
 
-        window.open(`http://localhost:3000/${supabase.auth.user().id}/${data[0].id}`)
+        router.push(`/${supabase.auth.user().id}/${data[0].id}/create`)
 
     }
 
