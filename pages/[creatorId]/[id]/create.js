@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import WebSocket from 'isomorphic-ws'
 import { supabase } from '../../../utils/supabaseClient'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
+import Navbar from "../../../components/Navbar"
 import Loader from '../../../components/Loading'
 
 import styles from '../../../styles/Create.module.css'
@@ -96,35 +96,38 @@ const Create = () => {
     }, [router.isReady, router.query, videoSrc])
 
     return (
-        <div className={styles.container}>
-            <div className={styles.wrapper}>
-                <input 
-                    className={styles.input}
-                    value={nickname}
-                    onChange={e => setNickname(e.target.value)}
-                    placeholder="Enter a nickname" />
-                <button
-                    onClick={handleClick}
-                    className={styles.button}
-                    disabled={loading}
-                >
-                    {loading ? "Creating watchparty" : "Join watchparty"}
-                </button>
-            </div>
-
-            <Loader loading={loading} />
-            {!loading && (
+        <>
+            <Navbar />
+            <div className={styles.container}>
                 <div className={styles.wrapper}>
-                    <p>Share the following link</p>
-                    <input id="link" type="text" readOnly={true} value={`http://localhost:3000${link}`} className={styles.url} />
-                    <button 
-                        onClick={copyLink}
-                        className={styles.copyButton}>
-                        Copy link
+                    <input 
+                        className={styles.input}
+                        value={nickname}
+                        onChange={e => setNickname(e.target.value)}
+                        placeholder="Enter a nickname" />
+                    <button
+                        onClick={handleClick}
+                        className={styles.button}
+                        disabled={loading}
+                    >
+                        {loading ? "Creating watchparty" : "Join watchparty"}
                     </button>
                 </div>
-            )}
-        </div>
+
+                <Loader loading={loading} />
+                {!loading && (
+                    <div className={styles.wrapper}>
+                        <p>Share the following link</p>
+                        <input id="link" type="text" readOnly={true} value={`http://localhost:3000${link}`} className={styles.url} />
+                        <button 
+                            onClick={copyLink}
+                            className={styles.copyButton}>
+                            Copy link
+                        </button>
+                    </div>
+                )}
+            </div>
+        </>
     )
 }
 
