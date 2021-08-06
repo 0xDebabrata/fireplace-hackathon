@@ -18,9 +18,16 @@ const Watch = () => {
     const [handlePlay, setHandlePlay] = useState(null)
     const [handlePause, setHandlePause] = useState(null)
     const [handleSeeked, setHandleSeeked] = useState(null)
+    const [playheadStart, setPlayheadStart] = useState(0)
     const [show, setShow] = useState(true)
 
     const router = useRouter()
+
+    const loadStartPosition = () => {
+        const vid = document.getElementById("video")
+        console.log(playheadStart)
+        vid.currentTime = playheadStart
+    }
 
     useEffect(() => {
 
@@ -105,6 +112,7 @@ const Watch = () => {
             if (response.method === "join") {
                 setVideoSrc(response.party.src)
                 setLoading(false)
+                setPlayheadStart(response.party.playhead)
 
                 const vid = document.getElementById("video")
                 const partyId = response.party.id
@@ -187,6 +195,7 @@ const Watch = () => {
                         onPlay={handlePlay}
                         onPause={handlePause}
                         onSeeked={handleSeeked}
+                        onLoadedMetadata={loadStartPosition}
                     />
                     :
                     <video 
@@ -195,6 +204,7 @@ const Watch = () => {
                         autoPlay={false} 
                         onPlay={() => setShow(false)}
                         controls={show}
+                        onLoadedMetadata={loadStartPosition}
                     />
                 }
             </div>
