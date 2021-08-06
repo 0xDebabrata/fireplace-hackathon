@@ -2,7 +2,6 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import WebSocket from 'isomorphic-ws'
 import { supabase } from "../../../../utils/supabaseClient"
-import uuid from 'react-uuid'
 import toast from "react-hot-toast"
 
 import Loader from "../../../../components/Loading"
@@ -12,7 +11,6 @@ import styles from "../../../../styles/Watch.module.css"
 const Watch = () => {
 
     const [creator, setCreator] = useState(false)
-    const [clientId, setClientId] = useState(null)
     const [videoSrc, setVideoSrc] = useState(null)
     const [loading, setLoading] = useState(true)
     const [handlePlay, setHandlePlay] = useState(null)
@@ -32,14 +30,12 @@ const Watch = () => {
 
     useEffect(() => {
 
-        if (supabase.auth.session()) {
-            setClientId(supabase.auth.user().id)
-            console.log("supa", clientId)
-        } else {
-            setClientId(uuid())
-            console.log("uuid", clientId)
+        if (!supabase.auth.session()) {
+            alert("You need to be logged in")
+            return
         }
 
+        const clientId = supabase.auth.user().id
         const ws = new WebSocket(`wss://evening-plains-98995.herokuapp.com/${clientId}`)
 
 

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import { supabase } from "../../../utils/supabaseClient"
 import { useRouter } from "next/router"
+
+import Login from "../../../components/Login"
 
 import styles from "../../../styles/Create.module.css"
 
@@ -28,21 +31,27 @@ const Join = () => {
     }, [router.isReady, router.query])
 
     return (
-        <div className={styles.nicknameContainer}>
-            <div className={styles.wrapper}>
-                <input 
-                    className={styles.input}
-                    value={nickname}
-                    onChange={e => setNickname(e.target.value)}
-                    placeholder="Enter a nickname" />
-                <button
-                    onClick={handleClick}
-                    className={styles.button}
-                >
-                    Join watchparty
-                </button>
-            </div>
-        </div>
+        <>
+            {supabase.auth.session() ?
+                <div className={styles.nicknameContainer}>
+                    <div className={styles.wrapper}>
+                        <input 
+                            className={styles.input}
+                            value={nickname}
+                            onChange={e => setNickname(e.target.value)}
+                            placeholder="Enter a nickname" />
+                        <button
+                            onClick={handleClick}
+                            className={styles.button}
+                        >
+                            Join watchparty
+                        </button>
+                    </div>
+                </div>
+                :
+                <Login />
+            }
+        </>
     )
 }
 
