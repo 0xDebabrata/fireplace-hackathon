@@ -31,9 +31,10 @@ const Join = () => {
 
             if (supabase.auth.session()) {
                 setEntry(true)
+                console.log("entry", entry)
             }
         }
-    }, [router.isReady, router.query])
+    }, [router.isReady, router.query, entry])
 
     return (
         <>
