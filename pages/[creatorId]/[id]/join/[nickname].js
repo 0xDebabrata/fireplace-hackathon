@@ -185,7 +185,7 @@ const Watch = () => {
             console.log("closed")
         }
 
-    }, [router.isReady, router.query, creator, connected])
+    }, [router.isReady, router.query, connected])
 
     return (
         <div>
