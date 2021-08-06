@@ -19,6 +19,7 @@ const Watch = () => {
     const [handlePause, setHandlePause] = useState(null)
     const [handleSeeked, setHandleSeeked] = useState(null)
     const [playheadStart, setPlayheadStart] = useState(0)
+    const [connected, setConnected] = useState(false)
     const [show, setShow] = useState(true)
 
     const router = useRouter()
@@ -101,6 +102,7 @@ const Watch = () => {
             }
 
             ws.onopen = () => {
+                setConnected(true)
                 ws.send(JSON.stringify(payload))
             }
 
@@ -177,10 +179,14 @@ const Watch = () => {
         }
 
         return () => {
-            ws.close()
+            if (connected) {
+                ws.close()
+            } else {
+                console.log("closed")
+            }
         }
 
-    }, [router.isReady, router.query, clientId])
+    }, [router.isReady, router.query, clientId, creator, connected])
 
     return (
         <div>
