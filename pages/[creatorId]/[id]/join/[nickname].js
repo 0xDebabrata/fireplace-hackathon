@@ -17,6 +17,7 @@ const Watch = () => {
     const [loading, setLoading] = useState(true)
     const [handlePlay, setHandlePlay] = useState(null)
     const [handlePause, setHandlePause] = useState(null)
+    const [handleSeeked, setHandleSeeked] = useState(null)
     const [show, setShow] = useState(true)
 
     const router = useRouter()
@@ -64,6 +65,22 @@ const Watch = () => {
                     }
 
                     setHandlePause(() => handlePauseFunc) 
+
+                    let handleSeekedFunc = () => {
+                        const vid = document.getElementById("video")
+                        const playhead = vid.currentTime
+
+                        const payload = {
+                            "method": "seeked",
+                            "partyId": id,
+                            "clientId": creatorId,
+                            "playhead": playhead
+                        }
+
+                        ws.send(JSON.stringify(payload))
+                    }
+
+                    setHandleSeeked(() => handleSeekedFunc)
 
                 }
             }
@@ -124,6 +141,10 @@ const Watch = () => {
                 vid.pause()
             }
 
+            if (response.method === "seeked") {
+                const vid = document.getElementById("video")
+                vid.currentTime = response.playhead
+            }
         }
 
         return () => {
@@ -144,6 +165,7 @@ const Watch = () => {
                         controls={true}
                         onPlay={handlePlay}
                         onPause={handlePause}
+                        onSeeked={handleSeeked}
                     />
                     :
                     <video 
