@@ -11,6 +11,7 @@ const Join = () => {
 
     const [nickname, setNickname] = useState("")
     const [link, setLink] = useState(null)
+    const [entry, setEntry] = useState(false)
     const router = useRouter()
 
     const handleClick = () => {
@@ -27,12 +28,16 @@ const Join = () => {
         if (router.isReady) {
             const { creatorId, id } = router.query
             setLink(`/${creatorId}/${id}/join/`)
+
+            if (supabase.auth.session()) {
+                setEntry(true)
+            }
         }
     }, [router.isReady, router.query])
 
     return (
         <>
-            {supabase.auth.session() ?
+            {entry ?
                 <div className={styles.nicknameContainer}>
                     <div className={styles.wrapper}>
                         <input 
