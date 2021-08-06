@@ -25,14 +25,15 @@ const Join = () => {
     }
 
     useEffect(() => {
+
+        if (supabase.auth.session()) {
+            setEntry(true)
+            console.log("entry", entry)
+        }
+
         if (router.isReady) {
             const { creatorId, id } = router.query
             setLink(`/${creatorId}/${id}/join/`)
-
-            if (supabase.auth.session()) {
-                setEntry(true)
-                console.log("entry", entry)
-            }
         }
     }, [router.isReady, router.query, entry])
 

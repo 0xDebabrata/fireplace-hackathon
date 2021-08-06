@@ -94,6 +94,7 @@ const Create = () => {
         return () => {
             if (connected) {
                 ws.close()
+                console.log("connection closed")
             }
 
             console.log("closed")
