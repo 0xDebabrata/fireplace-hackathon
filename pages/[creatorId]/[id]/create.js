@@ -53,7 +53,7 @@ const Create = () => {
     useEffect(() => {
 
         const clientId = supabase.auth.user().id
-        const ws = new WebSocket(`wss://ec2-18-217-250-58.us-east-2.compute.amazonaws.com/8080/${clientId}`)
+        const ws = new WebSocket(`wss://evening-plains-98995.herokuapp.com/8080/${clientId}`)
 
         if (router.isReady) {
             const { creatorId, id } = router.query
@@ -124,7 +124,7 @@ const Create = () => {
                 {!loading && (
                     <div className={styles.wrapper}>
                         <p>Share the following link</p>
-                        <input id="link" type="text" readOnly={true} value={`http://localhost:3000${link}`} className={styles.url} />
+                        <input id="link" type="text" readOnly={true} value={`https://fireplace-debabratajr.vercel.app/${link}`} className={styles.url} />
                         <button 
                             onClick={copyLink}
                             className={styles.copyButton}>
