@@ -102,8 +102,8 @@ const Watch = () => {
             }
 
             ws.onopen = () => {
-                setConnected(true)
                 ws.send(JSON.stringify(payload))
+                setConnected(true)
             }
 
         }
@@ -181,9 +181,8 @@ const Watch = () => {
         return () => {
             if (connected) {
                 ws.close()
-            } else {
-                console.log("closed")
             }
+            console.log("closed")
         }
 
     }, [router.isReady, router.query, clientId, creator, connected])
