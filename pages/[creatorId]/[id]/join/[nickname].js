@@ -39,7 +39,7 @@ const Watch = () => {
             console.log("uuid", clientId)
         }
 
-        const ws = new WebSocket(`ws://ec2-18-217-250-58.us-east-2.compute.amazonaws.com/8080/${clientId}`)
+        const ws = new WebSocket(`wss://ec2-18-217-250-58.us-east-2.compute.amazonaws.com/8080/${clientId}`)
 
 
         if (router.isReady) {
