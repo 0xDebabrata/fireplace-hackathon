@@ -15,6 +15,7 @@ const Create = () => {
     const [loading, setLoading] = useState(true)
     const [nickname, setNickname] = useState("")
     const [link, setLink] = useState(null)
+    const [connected, setConnected] = useState(false)
 
     const router = useRouter()
 
@@ -74,6 +75,7 @@ const Create = () => {
                     ws.onopen = () => {
                         ws.send(JSON.stringify(payload))
                         console.log("create request sent")
+                        setConnected(true)
                     }
                 }
 
@@ -90,10 +92,14 @@ const Create = () => {
         }
 
         return () => {
-            ws.close()
+            if (connected) {
+                ws.close()
+            }
+
+            console.log("closed")
         }
 
-    }, [router.isReady, router.query, videoSrc])
+    }, [router.isReady, router.query, videoSrc, connected])
 
     return (
         <>
