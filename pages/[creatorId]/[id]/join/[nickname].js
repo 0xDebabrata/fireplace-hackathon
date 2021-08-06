@@ -103,9 +103,30 @@ const Watch = () => {
             const response = JSON.parse(message.data)
 
             if (response.method === "join") {
-                console.log(response)
                 setVideoSrc(response.party.src)
                 setLoading(false)
+
+                const vid = document.getElementById("video")
+                const partyId = response.party.id
+
+                const updatePlayhead = () => {
+                    const playhead = vid.currentTime
+
+                    const payload = {
+                        "method": "update",
+                        "partyId": partyId,
+                        "playhead": playhead
+                    }
+
+                    ws.send(JSON.stringify(payload))
+
+                    setTimeout(updatePlayhead, 400)
+                }
+
+                if (creator) {
+                    updatePlayhead()
+                }
+
             }
 
             // New user joined watchparty
