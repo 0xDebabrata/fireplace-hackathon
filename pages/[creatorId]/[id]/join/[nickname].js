@@ -15,6 +15,9 @@ const Watch = () => {
     const [clientId, setClientId] = useState(null)
     const [videoSrc, setVideoSrc] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [handlePlay, setHandlePlay] = useState(null)
+    const [handlePause, setHandlePause] = useState(null)
+    const [show, setShow] = useState(true)
 
     const router = useRouter()
 
@@ -30,12 +33,38 @@ const Watch = () => {
 
         const ws = new WebSocket(`ws://localhost:8080/${clientId}`)
 
+
         if (router.isReady) {
             const { creatorId, id, nickname } = router.query
 
             if (supabase.auth.session()) {
                 if (creatorId === supabase.auth.user().id) {
                     setCreator(true)
+
+                    let handlePlayFunc = () => {
+                        const payload = {
+                            "method": "play",
+                            "partyId": id,
+                            "clientId": creatorId
+                        }
+
+                        ws.send(JSON.stringify(payload))
+                    }
+
+                    setHandlePlay(() => handlePlayFunc) 
+
+                    let handlePauseFunc = () => {
+                        const payload = {
+                            "method": "pause",
+                            "partyId": id,
+                            "clientId": creatorId
+                        }
+
+                        ws.send(JSON.stringify(payload))
+                    }
+
+                    setHandlePause(() => handlePauseFunc) 
+
                 }
             }
 
@@ -64,7 +93,6 @@ const Watch = () => {
 
             // New user joined watchparty
             if (response.method === "new") {
-                console.log(response.nickname + " joined!")
                 toast(`${response.nickname} joined!`, {
                     icon: "✌️",
                     position: "top-right",
@@ -76,7 +104,6 @@ const Watch = () => {
             }
 
             if (response.method === "leave") {
-                console.log(response.nickname + " left!")
                 toast(`${response.nickname} left!`, {
                     icon: "👋",
                     position: "top-right",
@@ -85,6 +112,16 @@ const Watch = () => {
                       color: '#fff',
                     },
                 })
+            }
+
+            if (response.method === "play") {
+                const vid = document.getElementById("video")
+                vid.play()
+            }
+
+            if (response.method === "pause") {
+                const vid = document.getElementById("video")
+                vid.pause()
             }
 
         }
@@ -99,12 +136,24 @@ const Watch = () => {
         <div>
             {loading ? <Loader loading={loading} /> :
             <div className={styles.container}>
-                <video 
-                    id="video"
-                    src={videoSrc} 
-                    autoPlay={false} 
-                    controls={true}
-                />
+                { creator ?
+                    <video 
+                        id="video"
+                        src={videoSrc} 
+                        autoPlay={true} 
+                        controls={true}
+                        onPlay={handlePlay}
+                        onPause={handlePause}
+                    />
+                    :
+                    <video 
+                        id="video"
+                        src={videoSrc} 
+                        autoPlay={false} 
+                        onPlay={() => setShow(false)}
+                        controls={show}
+                    />
+                }
             </div>
             }
         </div>
