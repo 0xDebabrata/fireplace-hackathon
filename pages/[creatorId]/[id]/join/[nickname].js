@@ -106,7 +106,7 @@ const Watch = () => {
             }
 
             ws.current.onopen = () => {
-                if (c%3 === 0) {
+                if (c%2 === 0) {
                     ws.current.send(JSON.stringify(payload))
                 }
                 setConnected(true)
