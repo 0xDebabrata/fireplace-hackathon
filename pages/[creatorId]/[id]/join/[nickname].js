@@ -22,7 +22,6 @@ const Watch = () => {
     const [connected, setConnected] = useState(false)
     const [show, setShow] = useState(true)
 
-    const [c , setC] = useState(1)
     const router = useRouter()
 
     const loadStartPosition = () => {
@@ -104,9 +103,10 @@ const Watch = () => {
 
             const sendJoinPayload = () => {
                 ws.current.send(JSON.stringify(payload))
+                console.log("join request sent")
             }
             ws.current.onopen = () => {
-                setTimeout(sendJoinPayload, 1000)
+                setTimeout(sendJoinPayload, 2000)
                 setConnected(true)
             }
 
