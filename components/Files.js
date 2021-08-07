@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { supabase } from '../utils/supabaseClient'
 
+import Loader from "./Loading"
 import Card from './Card'
 
 const Files = ({ flag }) => {
@@ -28,12 +29,12 @@ const Files = ({ flag }) => {
 
      return (
          <div>
-             {loading ? "Loading" :
+             {loading ? <Loader loading={loading} /> :
                  videos ?
                      videos.map(video => {
                          return <Card key={video.id} video={video} list={videos} setVideos={setVideos} />
                      }) :
-                     "Please upload a video to start watchparty"
+                     <p>Upload a video to start a watchparty</p>
              }
          </div>
      )

@@ -15,6 +15,11 @@ a {
   box-sizing: border-box;
 }
 
+p {
+    color: #FFB015;
+    margin: 0 auto;
+}
+
 .loader {
   border: 4px solid #f3f3f3; /* Light grey */
   border-top: 4px solid #FF900E; /* Blue */
