@@ -10,9 +10,9 @@ It's complete with user authentication, and real time playback controls. All you
 
 ### The Team
 
-- **Debabrata Mondal**
-- **Anish Basu**
-- **Debarghya Mondal**
+- **Debabrata Mondal** - [Twitter](https://twitter.com/0xDebabrata) - [GitHub](https://github.com/0xdebabrata)
+- **Anish Basu** - [Twitter](https://twitter.com/_anishbasu) - [GitHub](https://github.com/bananasaurus21)
+- **Debarghya Mondal** [GitHub](https://github.com/DebMondalX)
 
 ### Demo 
 
@@ -24,18 +24,18 @@ https://drive.google.com/file/d/1CoezdH2FRjMvC1k_CSzOwqemlauc9IZt/view?usp=shari
 
 Supabase has been integral to finishing this project in such a short period of time. Here's how we used it's features to efficiently deploy our service:
 
-1. When a user first signs in, fireplace sends a magic link using Supabase's email provider
+1. When a user first signs in, Fireplace sends a magic link using Supabase authentication service
 2. All uploaded videos are stored in Supabase storage
-3. Anytime a watchparty is created, Fireplace creates a signed URL in the background using Supabase functions which are stored in a Postgres database
+3. Anytime a watchparty is created, Fireplace creates a signed URL in the background using a function provided by Supabase which is then stored in a Supabase database
 4. All the media streaming is handled by Supabase as well
 
-In addition to that, we also used Vercel to host the next.js app and Heroku to the deploy Fireplace.
+In addition to that, we also used Vercel to host the next.js app and Heroku to deploy Fireplace websocket server.
 
 ### The process
 
 The motivation for creating Fireplace came from us wanting to watch videos with our friends in a seamless manner. The pandemic made it even more necessary to find new ways to connect with relatives and Supabase provided a great opportunity to make this project a reality. 
 
-From the get go we knew we need websockets to sync the video streams, but implementing it was a challenge on it's own.
+From the get go we knew we needed websockets to sync the video streams, but implementing it was a challenge on it's own.
 
 Nevertheless we persevered and executed our vision to the best of our abilities.
 
