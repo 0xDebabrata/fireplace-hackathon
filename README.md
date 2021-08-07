@@ -1,34 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Fireplace
 
-## Getting Started
+Fireplace is an easy to use media playback service that lets you upload content and create watch-parties which can be enjoyed with friends and family anywhere around the world!
 
-First, run the development server:
+It's complete with user authentication, and real time playback controls. All you need to do is invite your friends and have a good time at the Fireplace :)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+[Here's a link to the working site](https://fireplace-debabratajr.vercel.app/). Have a look around, we made the frontend as intuitive as possible to make it supa easy for new users.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[And here's a link to the Github repo.](https://github.com/0xDebabrata/fireplace-server)
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### The Team
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- **Debabrata Mondal**
+- **Anish Basu**
+- **Debarghya Mondal**
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Demo 
 
-## Learn More
+Here's quick demo of Fireplace :
+https://drive.google.com/file/d/1CoezdH2FRjMvC1k_CSzOwqemlauc9IZt/view?usp=sharing
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### How it works
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Supabase has been integral to finishing this project in such a short period of time. Here's how we used it's features to efficiently deploy our service:
 
-## Deploy on Vercel
+1. When a user first signs in, fireplace sends a magic link using Supabase's email provider
+2. All uploaded videos are stored in Supabase storage
+3. Anytime a watchparty is created, Fireplace creates a signed URL in the background using Supabase functions which are stored in a Postgres database
+4. All the media streaming is handled by Supabase as well
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+In addition to that, we also used Vercel to host the next.js app and Heroku to the deploy Fireplace.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### The process
+
+The motivation for creating Fireplace came from us wanting to watch videos with our friends in a seamless manner. The pandemic made it even more necessary to find new ways to connect with relatives and Supabase provided a great opportunity to make this project a reality. 
+
+From the get go we knew we need websockets to sync the video streams, but implementing it was a challenge on it's own.
+
+Nevertheless we persevered and executed our vision to the best of our abilities.
+
+### What's next?
+
+We are confident in our abilities to take Fireplace to the next level. We have already made plans to implement a chat feature and more playback controls. We want to make Fireplace the easiest way to create watchparties and with the help of Supabase, we are extremely optimistic of what's to come.
+
+
+
