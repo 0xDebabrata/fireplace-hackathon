@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
 import WebSocket from 'isomorphic-ws'
 import { supabase } from "../../../../utils/supabaseClient"
-import toast from "react-hot-toast"
+import toast, {useToasterStore} from "react-hot-toast"
 
 import Loader from "../../../../components/Loading"
 
@@ -22,6 +22,7 @@ const Watch = () => {
     const [connected, setConnected] = useState(false)
     const [show, setShow] = useState(true)
 
+    const [c , setC] = useState(1)
     const router = useRouter()
 
     const loadStartPosition = () => {
@@ -34,6 +35,7 @@ const Watch = () => {
 
         const clientId = supabase.auth.user().id
 
+        console.log(c)
         if (!clientId) {
             alert("You need to be logged in")
             return
@@ -43,6 +45,7 @@ const Watch = () => {
         
         ws.current = new WebSocket(`ws://localhost:8000/${clientId}`)
 
+        setC(c+1)
 
         if (router.isReady) {
             const { creatorId, id, nickname } = router.query
@@ -103,7 +106,9 @@ const Watch = () => {
             }
 
             ws.current.onopen = () => {
-                ws.current.send(JSON.stringify(payload))
+                if (c%3 === 0) {
+                    ws.current.send(JSON.stringify(payload))
+                }
                 setConnected(true)
             }
 
