@@ -120,7 +120,7 @@ const Watch = () => {
             console.log("closed")
         }
 
-    }, [router.isReady, router.query, connected])
+    }, [router.isReady])
 
     useEffect(() => {
         if (!ws.current) return;
