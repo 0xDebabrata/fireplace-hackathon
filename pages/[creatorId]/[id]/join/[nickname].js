@@ -35,7 +35,6 @@ const Watch = () => {
 
         const clientId = supabase.auth.user().id
 
-        console.log(c)
         if (!clientId) {
             alert("You need to be logged in")
             return
@@ -44,8 +43,6 @@ const Watch = () => {
         ws.current = new WebSocket(`wss://evening-plains-98995.herokuapp.com/${clientId}`)
         
         //ws.current = new WebSocket(`ws://localhost:8000/${clientId}`)
-
-        setC(c+1)
 
         if (router.isReady) {
             const { creatorId, id, nickname } = router.query
@@ -105,10 +102,11 @@ const Watch = () => {
                 "partyId": id
             }
 
+            const sendJoinPayload = () => {
+                ws.current.send(JSON.stringify(payload))
+            }
             ws.current.onopen = () => {
-                if (c%2 === 0) {
-                    ws.current.send(JSON.stringify(payload))
-                }
+                setTimeout(sendJoinPayload, 1000)
                 setConnected(true)
             }
 
