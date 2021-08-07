@@ -41,9 +41,9 @@ const Watch = () => {
             return
         }
             
-        //const ws = new WebSocket(`wss://evening-plains-98995.herokuapp.com/${clientId}`)
+        ws.current = new WebSocket(`wss://evening-plains-98995.herokuapp.com/${clientId}`)
         
-        ws.current = new WebSocket(`ws://localhost:8000/${clientId}`)
+        //ws.current = new WebSocket(`ws://localhost:8000/${clientId}`)
 
         setC(c+1)
 
