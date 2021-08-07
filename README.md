@@ -6,7 +6,7 @@ It's complete with user authentication, and real time playback controls. All you
 
 [Here's a link to the working site](https://fireplace-debabratajr.vercel.app/). Have a look around, we made the frontend as intuitive as possible to make it supa easy for new users.
 
-[And here's a link to the Github repo.](https://github.com/0xDebabrata/fireplace-server)
+[And here's a link to the server repo.](https://github.com/0xDebabrata/fireplace-server)
 
 ### The Team
 
