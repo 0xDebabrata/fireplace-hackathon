@@ -11,7 +11,7 @@ const Join = () => {
 
     const [nickname, setNickname] = useState("")
     const [link, setLink] = useState(null)
-    const [entry, setEntry] = useState(false)
+    const [session, setSession] = useState(null)
     const router = useRouter()
 
     const handleClick = () => {
@@ -26,20 +26,23 @@ const Join = () => {
 
     useEffect(() => {
 
-        if (supabase.auth.session()) {
-            setEntry(true)
-            console.log("entry", entry)
-        }
+        setSession(supabase.auth.session())
+        console.log("session", session)
+
+        supabase.auth.onAuthStateChange((event, session) => {
+            setSession(session)
+        })
 
         if (router.isReady) {
             const { creatorId, id } = router.query
             setLink(`/${creatorId}/${id}/join/`)
+
         }
-    }, [router.isReady, router.query, entry])
+    }, [router.isReady, router.query])
 
     return (
         <>
-            {entry ?
+            {session ?
                 <div className={styles.nicknameContainer}>
                     <div className={styles.wrapper}>
                         <input 

@@ -53,7 +53,8 @@ const Create = () => {
     useEffect(() => {
 
         const clientId = supabase.auth.user().id
-        const ws = new WebSocket(`wss://evening-plains-98995.herokuapp.com/${clientId}`)
+        // const ws = new WebSocket(`wss://evening-plains-98995.herokuapp.com/${clientId}`)
+        const ws = new WebSocket(`ws://localhost:8000/${clientId}`)
 
         if (router.isReady) {
             const { creatorId, id } = router.query

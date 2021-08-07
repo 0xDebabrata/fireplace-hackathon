@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import WebSocket from 'isomorphic-ws'
 import { supabase } from "../../../../utils/supabaseClient"
 import toast from "react-hot-toast"
@@ -9,6 +9,8 @@ import Loader from "../../../../components/Loading"
 import styles from "../../../../styles/Watch.module.css"
 
 const Watch = () => {
+
+    const ws = useRef(null)
 
     const [creator, setCreator] = useState(false)
     const [videoSrc, setVideoSrc] = useState(null)
@@ -30,13 +32,16 @@ const Watch = () => {
 
     useEffect(() => {
 
-        if (!supabase.auth.session()) {
+        const clientId = supabase.auth.user().id
+
+        if (!clientId) {
             alert("You need to be logged in")
             return
         }
-
-        const clientId = supabase.auth.user().id
-        const ws = new WebSocket(`wss://evening-plains-98995.herokuapp.com/${clientId}`)
+            
+        //const ws = new WebSocket(`wss://evening-plains-98995.herokuapp.com/${clientId}`)
+        
+        ws.current = new WebSocket(`ws://localhost:8000/${clientId}`)
 
 
         if (router.isReady) {
@@ -53,7 +58,7 @@ const Watch = () => {
                             "clientId": creatorId
                         }
 
-                        ws.send(JSON.stringify(payload))
+                        ws.current.send(JSON.stringify(payload))
                     }
 
                     setHandlePlay(() => handlePlayFunc) 
@@ -65,7 +70,7 @@ const Watch = () => {
                             "clientId": creatorId
                         }
 
-                        ws.send(JSON.stringify(payload))
+                        ws.current.send(JSON.stringify(payload))
                     }
 
                     setHandlePause(() => handlePauseFunc) 
@@ -81,7 +86,7 @@ const Watch = () => {
                             "playhead": playhead
                         }
 
-                        ws.send(JSON.stringify(payload))
+                        ws.current.send(JSON.stringify(payload))
                     }
 
                     setHandleSeeked(() => handleSeekedFunc)
@@ -97,14 +102,27 @@ const Watch = () => {
                 "partyId": id
             }
 
-            ws.onopen = () => {
-                ws.send(JSON.stringify(payload))
+            ws.current.onopen = () => {
+                ws.current.send(JSON.stringify(payload))
                 setConnected(true)
             }
 
         }
 
-        ws.onmessage = message => {
+        return () => {
+            if (connected) {
+                ws.current.close()
+                console.log("connection closed")
+            }
+            console.log("closed")
+        }
+
+    }, [router.isReady, router.query, connected])
+
+    useEffect(() => {
+        if (!ws.current) return;
+
+        ws.current.onmessage = message => {
             const response = JSON.parse(message.data)
 
             if (response.method === "join") {
@@ -124,7 +142,10 @@ const Watch = () => {
                         "playhead": playhead
                     }
 
-                    ws.send(JSON.stringify(payload))
+                    if (connected) {
+                        ws.current.send(JSON.stringify(payload))
+                    }
+
 
                     setTimeout(updatePlayhead, 400)
                 }
@@ -160,12 +181,17 @@ const Watch = () => {
 
             if (response.method === "play") {
                 const vid = document.getElementById("video")
-                vid.play()
+
+                if (!creator && !show) {
+                    vid.play()
+                }
             }
 
             if (response.method === "pause") {
                 const vid = document.getElementById("video")
-                vid.pause()
+                if (!creator && !show) {
+                    vid.pause()
+                }
             }
 
             if (response.method === "seeked") {
@@ -173,16 +199,8 @@ const Watch = () => {
                 vid.currentTime = response.playhead
             }
         }
+    }, [creator, show, connected])
 
-        return () => {
-            if (connected) {
-                ws.close()
-                console.log("connection closed")
-            }
-            console.log("closed")
-        }
-
-    }, [router.isReady, router.query, connected])
 
     return (
         <div>

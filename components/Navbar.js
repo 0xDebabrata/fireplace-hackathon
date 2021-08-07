@@ -20,7 +20,7 @@ const Navbar = () => {
     return (
         <nav className={styles.navbar}>
             <Link href="/" passHref>
-                <Image
+                <img
                     className={styles.logo}
                     src="/logo.png"
                     alt="fireplace logo"
