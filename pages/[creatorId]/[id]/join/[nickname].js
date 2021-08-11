@@ -39,9 +39,7 @@ const Watch = () => {
             return
         }
             
-        ws.current = new WebSocket(`wss://evening-plains-98995.herokuapp.com/${clientId}`)
-        
-        //ws.current = new WebSocket(`ws://localhost:8000/${clientId}`)
+        ws.current = new WebSocket(`ws://localhost:8000/${clientId}`)
 
         if (router.isReady) {
             const { creatorId, id, nickname } = router.query
