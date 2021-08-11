@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import WebSocket from 'isomorphic-ws'
 import { supabase } from '../../../utils/supabaseClient'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
 import Navbar from "../../../components/Navbar"
@@ -11,6 +11,7 @@ import styles from '../../../styles/Create.module.css'
 
 const Create = () => {
 
+    const ws = useRef(null)
     const [videoSrc, setVideoSrc] = useState(null)
     const [loading, setLoading] = useState(true)
     const [nickname, setNickname] = useState("")
@@ -50,19 +51,26 @@ const Create = () => {
         toast.success("Link copied successfully!")
     }
 
+    // Get signedURL for video
+    useEffect(() => {
+        if (router.isReady) {
+            const { id } = router.query
+            getVideoSrc(id)
+        }
+    })
+
     useEffect(() => {
 
         const clientId = supabase.auth.user().id
-        const ws = new WebSocket(`ws://localhost:8000/${clientId}`)
 
         if (router.isReady) {
             const { creatorId, id } = router.query
             setLink(`/${creatorId}/${id}/join/`)
 
-            getVideoSrc(id)
-
             if (creatorId === clientId) {
                 // Create watchparty
+
+                ws.current = new WebSocket(`ws://localhost:8080/${clientId}`)
 
                 const payload = {
                     "method": "create",
@@ -72,17 +80,28 @@ const Create = () => {
                 }
 
                 if (videoSrc) {
-                    ws.onopen = () => {
-                        ws.send(JSON.stringify(payload))
+                    ws.current.onopen = () => {
+                        ws.current.send(JSON.stringify(payload))
                         console.log("create request sent")
-                        setConnected(true)
                     }
                 }
 
             }
         }
 
-        ws.onmessage = message => {
+        return () => {
+            if (ws.current) {
+                ws.current.close()
+                console.log("connection closed")
+            }
+        }
+
+    }, [router.isReady, router.query, videoSrc])
+
+    useEffect(() => {
+        if (!ws.current) return
+
+        ws.current.onmessage = message => {
             const response = JSON.parse(message.data)
 
             if (response.method === "create") {
@@ -91,16 +110,8 @@ const Create = () => {
             }
         }
 
-        return () => {
-            if (connected) {
-                ws.close()
-                console.log("connection closed")
-            }
+    })
 
-            console.log("closed")
-        }
-
-    }, [router.isReady, router.query, videoSrc, connected])
 
     return (
         <>

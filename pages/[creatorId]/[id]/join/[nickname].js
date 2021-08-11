@@ -39,7 +39,7 @@ const Watch = () => {
             return
         }
             
-        ws.current = new WebSocket(`ws://localhost:8000/${clientId}`)
+        ws.current = new WebSocket(`ws://localhost:8080/${clientId}`)
 
         if (router.isReady) {
             const { creatorId, id, nickname } = router.query
