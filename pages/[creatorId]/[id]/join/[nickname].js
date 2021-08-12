@@ -85,7 +85,6 @@ const Watch = () => {
                     }
 
                     setHandleSeeked(() => handleSeekedFunc)
-
                 }
             }
 
