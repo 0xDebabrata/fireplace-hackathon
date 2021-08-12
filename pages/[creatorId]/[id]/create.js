@@ -71,6 +71,7 @@ const Create = () => {
                 // Create watchparty
 
                 ws.current = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${clientId}`)
+                console.log(process.env.NEXT_PUBLIC_WEBSOCKET_URL)
 
                 const payload = {
                     "method": "create",
