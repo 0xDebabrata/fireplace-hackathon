@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
 import WebSocket from 'isomorphic-ws'
 import { supabase } from "../../../../utils/supabaseClient"
-import toast, {useToasterStore} from "react-hot-toast"
+import toast from "react-hot-toast"
 
 import Loader from "../../../../components/Loading"
 
@@ -19,7 +19,6 @@ const Watch = () => {
     const [handlePause, setHandlePause] = useState(null)
     const [handleSeeked, setHandleSeeked] = useState(null)
     const [playheadStart, setPlayheadStart] = useState(0)
-    const [connected, setConnected] = useState(false)
     const [show, setShow] = useState(true)
 
     const router = useRouter()
@@ -39,7 +38,6 @@ const Watch = () => {
             return
         }
             
-        ws.current = new WebSocket(`ws://localhost:8080/${clientId}`)
 
         if (router.isReady) {
             const { creatorId, id, nickname } = router.query
@@ -91,6 +89,8 @@ const Watch = () => {
                 }
             }
 
+            ws.current = new WebSocket(`ws://localhost:8080/${clientId}`)
+
             // Send join watchparty request to server
             const payload = {
                 "method": "join",
@@ -99,26 +99,21 @@ const Watch = () => {
                 "partyId": id
             }
 
-            const sendJoinPayload = () => {
+            ws.current.onopen = () => {
                 ws.current.send(JSON.stringify(payload))
                 console.log("join request sent")
-            }
-            ws.current.onopen = () => {
-                setTimeout(sendJoinPayload, 2000)
-                setConnected(true)
             }
 
         }
 
         return () => {
-            if (connected) {
+            if (ws.current) {
                 ws.current.close()
                 console.log("connection closed")
             }
-            console.log("closed")
         }
 
-    }, [router.isReady])
+    }, [router.isReady, router.query])
 
     useEffect(() => {
         if (!ws.current) return;
@@ -143,10 +138,7 @@ const Watch = () => {
                         "playhead": playhead
                     }
 
-                    if (connected) {
-                        ws.current.send(JSON.stringify(payload))
-                    }
-
+                    ws.current.send(JSON.stringify(payload))
 
                     setTimeout(updatePlayhead, 400)
                 }
@@ -200,7 +192,7 @@ const Watch = () => {
                 vid.currentTime = response.playhead
             }
         }
-    }, [creator, show, connected])
+    }, [creator, show])
 
 
     return (
