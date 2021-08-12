@@ -70,7 +70,7 @@ const Create = () => {
             if (creatorId === clientId) {
                 // Create watchparty
 
-                ws.current = new WebSocket(`ws://localhost:8080/${clientId}`)
+                ws.current = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${clientId}`)
 
                 const payload = {
                     "method": "create",
