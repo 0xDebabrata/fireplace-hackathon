@@ -12,7 +12,6 @@ import styles from '../../../styles/Create.module.css'
 const Create = () => {
 
     const ws = useRef(null)
-    const [videoSrc, setVideoSrc] = useState(null)
     const [loading, setLoading] = useState(true)
     const [nickname, setNickname] = useState("")
     const [link, setLink] = useState(null)
@@ -20,14 +19,30 @@ const Create = () => {
 
     const router = useRouter()
 
-    const getVideoSrc = async (id) => {
+    // Get video signed URL and send create request to server
+    const createWatchparty = async (id, clientId) => {
         const { data: watchparties, error } = await supabase
             .from("watchparties")
             .select("video_url")
             .eq("id", id)
 
         if (!error) {
-            setVideoSrc(watchparties[0].video_url)
+
+            ws.current = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${clientId}`)
+
+            const payload = {
+                "method": "create",
+                "partyId": id,
+                "src": watchparties[0].video_url,
+                "clientId": clientId
+            }
+
+            ws.current.onopen = () => {
+                ws.current.send(JSON.stringify(payload))
+                console.log("create request sent")
+                setConnected(true)
+            }
+
         } else {
             console.log(error)
             alert("There was a problem")
@@ -51,14 +66,6 @@ const Create = () => {
         toast.success("Link copied successfully!")
     }
 
-    // Get signedURL for video
-    useEffect(() => {
-        if (router.isReady) {
-            const { id } = router.query
-            getVideoSrc(id)
-        }
-    })
-
     useEffect(() => {
 
         const clientId = supabase.auth.user().id
@@ -69,26 +76,11 @@ const Create = () => {
 
             if (creatorId === clientId) {
                 // Create watchparty
-
-                ws.current = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/${clientId}`)
-
-                const payload = {
-                    "method": "create",
-                    "partyId": id,
-                    "src": videoSrc,
-                    "clientId": clientId
-                }
-
-                if (videoSrc) {
-                    ws.current.onopen = () => {
-                        ws.current.send(JSON.stringify(payload))
-                        console.log("create request sent")
-                    }
-                }
-
+                createWatchparty(id, clientId)
             }
         }
 
+        
         return () => {
             if (ws.current) {
                 ws.current.close()
@@ -96,10 +88,10 @@ const Create = () => {
             }
         }
 
-    }, [router.isReady, router.query, videoSrc])
+    }, [router.isReady, router.query])
 
     useEffect(() => {
-        if (!ws.current) return
+        if (!connected) return
 
         ws.current.onmessage = message => {
             const response = JSON.parse(message.data)
