@@ -80,7 +80,6 @@ const Create = () => {
             }
         }
 
-        
         return () => {
             if (ws.current) {
                 ws.current.close()
