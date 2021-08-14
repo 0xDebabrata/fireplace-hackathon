@@ -63,6 +63,11 @@ const Card = ({ video, list, setVideos }) => {
 
     }
 
+    // Temporarily disable watchparty creation
+    const handleClick = () => {
+        toast.error("Creating watchparties is temporarily disabled. The websocket server is being re-deployed on AWS instead of Heroku")
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.wrapperLeft}>
@@ -75,7 +80,7 @@ const Card = ({ video, list, setVideos }) => {
             </div>
             <div className={styles.wrapperRight}>
                 <button 
-                    onClick={() => createWatchparty(video.name)}
+                    onClick={handleClick}
                     className={styles.button}>
                     START
                 </button>
