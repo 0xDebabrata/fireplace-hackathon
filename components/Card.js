@@ -80,7 +80,7 @@ const Card = ({ video, list, setVideos }) => {
             </div>
             <div className={styles.wrapperRight}>
                 <button 
-                    onClick={handleClick}
+                    onClick={() => createWatchparty(video.name)}
                     className={styles.button}>
                     START
                 </button>
