@@ -145,8 +145,23 @@ const Watch = () => {
                     setTimeout(updatePlayhead, 400)
                 }
 
+                const keepAlive = () => {
+
+                    console.log("Connection check")
+
+                    const payload = {
+                        "method": "check",
+                    }
+
+                    ws.current.send(JSON.stringify(payload))
+
+                    setTimeout(keepAlive, 60000)
+                }
+
                 if (creator) {
                     updatePlayhead()
+                } else {
+                    keepAlive()
                 }
 
             }
